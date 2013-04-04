@@ -2,7 +2,7 @@
   processing
   "0.1.0-SNAPSHOT"
   :dependencies
-  [[org.clojure/clojure "1.5.1"]
+  [[org.clojure/clojure "1.4.0"]
    [lib-noir "0.4.9"]
    [compojure "1.1.5"]
    [ring-server "0.2.7"]
@@ -19,7 +19,11 @@
      javax.jms/jms
      com.sun.jdmk/jmxtools
      com.sun.jmx/jmxri]]
-   [clabango "0.5"]]
+   [clabango "0.5"]
+   ;[org.clojure/clojurescript "0.0-1552"]
+   [crate "0.2.4"]
+   [jayq "2.3.0"]
+   [fetch "0.1.0-alexguev-alpha1"]]
   :ring
   {:handler processing.handler/war-handler,
    :init processing.handler/init,
@@ -33,7 +37,24 @@
   :url
   "http://example.com/FIXME"
   :plugins
-  [[lein-ring "0.8.3"]]
+  [[lein-ring "0.8.3"]
+   [lein-cljsbuild "0.3.0"]]
   :description
   "FIXME: write description"
-  :min-lein-version "2.0.0")
+  :min-lein-version "2.0.0"
+  :source-paths ["src/clj"]
+  :cljsbuild {
+    :builds [{:id "dev"
+              :source-paths ["src/cljs"], 
+              :compiler {:pretty-print true, 
+                         :output-to "resources/public/cljs/main.js",
+                         :output-dir "resources/public/cljs/"
+                         :optimizations :none}}
+             {:id "prod"
+              :source-paths ["src/cljs"], 
+              :compiler {:output-to "resources/public/cljs/main.js",
+                         :optimizations :whitespace
+                         :externs ["externs/jquery-1.8.js"]}}]})
+
+
+  

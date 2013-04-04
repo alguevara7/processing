@@ -1,6 +1,8 @@
 # processing
 
-FIXME
+TBD: document clojurescript setup
+- lighttable
+- cljsbuild
 
 ## Prerequisites
 

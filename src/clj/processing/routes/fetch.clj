@@ -1,11 +1,8 @@
-(ns processing.routes.home
-  (:use compojure.core)
-  (:require [processing.views.layout :as layout]
-            [processing.util :as util]))
+(ns processing.routes.fetch
+  (:use [compojure.core]
+        [service.fetch.remotes :only [call-remote safe-read defremote]]))
 
-(def sketches
-  {"circles"
-   "/* 
+(def sketch "/* 
   PROCESSINGJS.COM - BASIC EXAMPLE
   Delayed Mouse Tracking  
   MIT License - Hyper-Metrix.com/F1LT3R
@@ -57,17 +54,30 @@ void mouseMoved(){
   nX = mouseX;
   nY = mouseY;  
 }
-"})
+")
 
-(defn home-page []
-  (layout/render "home.html"
-                 {:sketch "circles"
-                  :sketch-source (get sketches "circles")}))
+(def all-sketches
+  {"1" {:title "El Circulo 1" :content sketch}
+   "2" {:title "El Circulo 2" :content sketch}
+   "3" {:title "El Circulo 3" :content sketch}})
+
+(defn get-sketches []
+  (->> (seq all-sketches)
+       (map (fn [[k v]] {:id k :title (:title v)}))
+       vec))
+
+(get-sketches)
 
 (defn get-sketch [id]
-  (println id)
-  (get sketches id))
+  (println "get-sketch " id "string? " (string? id))
+  (get (get all-sketches id) :content))
 
-(defroutes home-routes
-  (GET "/" [] (home-page))
-  (GET "/sketches/:id" [id] (get-sketch id)))
+(defremote sketches []
+  (get-sketches))
+
+(defroutes fetch-routes
+  (ANY "/_fetch" [params remote]
+    (let [params (safe-read params)
+          remote (keyword remote)]
+      (call-remote remote params)))
+  (GET "/sketch/:id" [id] (get-sketch id)))
