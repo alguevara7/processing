@@ -1,4 +1,6 @@
+April 4th, 2013
 - use https://github.com/Prismatic/dommy
 - use postgres
 - infinite scrolling
-- ...
+- consider using https://github.com/ckirkendall/enfocus
+- use html5 history api
