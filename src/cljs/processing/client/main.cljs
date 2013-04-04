@@ -1,36 +1,34 @@
 (ns processing.client.main
   (:require [crate.core :as crate]
-            [fetch.remotes :as remotes])
-  (:use [jayq.core :only [$ append prepend add-class bind toggle-class parents find toggle ajax]]
-        [jayq.util :only [log wait]])
-  (:use-macros [crate.def-macros :only [defpartial]]
-               [jayq.macros :only [let-ajax]])
+            [fetch.remotes :as remotes]
+            [domina :as dom])
+  (:use-macros [crate.def-macros :only [defpartial]])
   (:require-macros [fetch.macros :as fm]))
 
-(def $content ($ :#content))
+(def content (dom/by-id "content"))
 
 (defpartial sketch-canvas [id]
   [:canvas {:id (str "processing_" id)
-            :width 50 :height 50
+            :width 400 :height 400
             :tab-index 0
             :style "image-rendering: -webkit-optimize-contrast !important;"
             }])
-
 
 (defpartial sketch [title canvas]
   [:div.sketch
      [:div.sketch-header title]
      [:div.sketch-content canvas]])
 
+(defn load-sketch [canvas sources]
+  (.loadSketchFromSources js/Processing canvas (clj->js sources)))
+
 (defn ^:export init [] 
-  (log "Initializing web client...")
+  (dom/log "Initializing web client...")
   
   (fm/letrem [r (sketches)]
     (doseq [{:keys [id title]} r]
       (let [canvas (sketch-canvas id)]
-        (.loadSketchFromSources js/Processing canvas (clj->js [(str "/sketch/" id)]))
-        (append $content (sketch title canvas))
-      ))))
+        (load-sketch canvas [(str "/sketch/" id)])
+        (dom/append! content (sketch title canvas)))))
   
-;(def $clickme ($ :#clickme))
-;(bind $clickme :click show-sketch)
+  (dom/log "Web client initialized :)"))

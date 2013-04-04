@@ -17,7 +17,7 @@ int delay = 16;
 
 // Setup the Processing Canvas
 void setup(){
-  size( 200, 200 );
+  size( 400, 400 );
   strokeWeight( 10 );
   frameRate( 15 );
   X = width / 2;
@@ -76,7 +76,7 @@ void mouseMoved(){
   (get-sketches))
 
 (defroutes fetch-routes
-  (ANY "/_fetch" [params remote]
+  (POST "/_fetch" [params remote]
     (let [params (safe-read params)
           remote (keyword remote)]
       (call-remote remote params)))
