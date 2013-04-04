@@ -18,7 +18,7 @@
 
 
 (defpartial sketch [title canvas]
-  [:li.sketch
+  [:div.sketch
      [:div.sketch-header title]
      [:div.sketch-content canvas]])
 
@@ -32,12 +32,5 @@
         (append $content (sketch title canvas))
       ))))
   
-(defn show-sketch []
-)  
-
-;var canvasRef = document.createElement('canvas');
-;var p = Processing.loadSketchFromSources(canvasRef, ['/uploads/processing_js/anything_1.pde']);
-;$('#loader').append(canvasRef);
-  
-(def $clickme ($ :#clickme))
-(bind $clickme :click show-sketch)
+;(def $clickme ($ :#clickme))
+;(bind $clickme :click show-sketch)

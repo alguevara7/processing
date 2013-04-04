@@ -1,0 +1,4 @@
+- use https://github.com/Prismatic/dommy
+- use postgres
+- infinite scrolling
+- ...
