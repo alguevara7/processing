@@ -46,8 +46,7 @@
              {:id "prod"
               :source-paths ["src/cljs"], 
               :compiler {:output-to "resources/public/cljs/main.js",
-                         :optimizations :whitespace
-                         :externs ["externs/jquery-1.8.js"]}}]})
+                         :optimizations :advanced}}]})
 
 
   
