@@ -1,9 +1,8 @@
 (ns processing.client.main
-  (:require [crate.core :as crate]
-            [fetch.remotes :as remotes]
-            [domina :as dom])
-  (:use-macros [crate.def-macros :only [defpartial]])
-  (:require-macros [fetch.macros :as fm]))
+  (:require [crate.core :as crate]            
+            [domina :as dom]
+            [processing.client.ajax :as ajax])
+  (:use-macros [crate.def-macros :only [defpartial]]))
 
 (defpartial sketch-canvas [id]
   [:canvas {:id (str "processing_" id)
@@ -22,13 +21,14 @@
       [:span.sketch-viewed viewed]]
      [:div.sketch-content canvas]])
 
-(defn load-sketch [canvas sources]
+(defn load-sketch [canvas sources]  
   (.loadSketchFromSources js/Processing canvas (clj->js sources)))
 
 (def content (dom/by-id "content"))
 
 (defn render [old-state new-state]
   (dom/destroy-children! content)
+  (.log js/console (keys (first new-state)))
   (doseq [{:keys [id] :as s} new-state]
       (let [canvas (sketch-canvas id)]
         (load-sketch canvas [(str "/sketch/" id)])
@@ -44,7 +44,7 @@
 (defn ^:export init [] 
   (dom/log "Initializing web client...")
   
-  (fm/letrem [sketches (sketches)]
-    (reset! application-state sketches))
+  (ajax/GET "/all-sketches" (partial reset! application-state))
+  
   
   (dom/log "Web client initialized :)"))

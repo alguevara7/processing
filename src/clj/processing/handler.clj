@@ -1,8 +1,7 @@
 (ns processing.handler
   (:use compojure.core
         processing.routes.home
-        processing.routes.fetch
-        [fetch.service.remotes :only [fetch-routes]])
+        processing.routes.fetch)
   (:require [noir.util.middleware :as middleware]
             [compojure.route :as route]))
 
