@@ -5,8 +5,6 @@
   (:use-macros [crate.def-macros :only [defpartial]])
   (:require-macros [fetch.macros :as fm]))
 
-(def content (dom/by-id "content"))
-
 (defpartial sketch-canvas [id]
   [:canvas {:id (str "processing_" id)
             :width 400 :height 400
@@ -14,21 +12,39 @@
             :style "image-rendering: -webkit-optimize-contrast !important;"
             }])
 
-(defpartial sketch [title canvas]
+(defpartial sketch [{:keys [title author liked remixed viewed]} canvas]
   [:div.sketch
-     [:div.sketch-header title]
+     [:div.sketch-header
+      [:span.sketch-title title] 
+      [:span.sketch-author author] 
+      [:span.sketch-liked liked] 
+      [:span.sketch-remixed remixed] 
+      [:span.sketch-viewed viewed]]
      [:div.sketch-content canvas]])
 
 (defn load-sketch [canvas sources]
   (.loadSketchFromSources js/Processing canvas (clj->js sources)))
 
+(def content (dom/by-id "content"))
+
+(defn render [old-state new-state]
+  (dom/destroy-children! content)
+  (doseq [{:keys [id] :as s} new-state]
+      (let [canvas (sketch-canvas id)]
+        (load-sketch canvas [(str "/sketch/" id)])
+        (dom/append! content (sketch s canvas)))))
+
+;; application state
+(def application-state (atom []))
+
+(add-watch application-state :app-watcher
+           (fn [key reference old-state new-state] 
+             (render old-state new-state)))
+
 (defn ^:export init [] 
   (dom/log "Initializing web client...")
   
-  (fm/letrem [r (sketches)]
-    (doseq [{:keys [id title]} r]
-      (let [canvas (sketch-canvas id)]
-        (load-sketch canvas [(str "/sketch/" id)])
-        (dom/append! content (sketch title canvas)))))
+  (fm/letrem [sketches (sketches)]
+    (reset! application-state sketches))
   
   (dom/log "Web client initialized :)"))
