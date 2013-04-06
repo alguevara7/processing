@@ -1,12 +1,12 @@
-(ns processing.routes.fetch
-  (:use compojure.core
-        [processing.models.simulated :only [all-sketches]]
-        [fetch.service.remotes :only [defremote]]))
+(ns processing.routes.fetch  
+  (:require [compojure.core :refer :all]
+            [processing.models.simulated :refer [all-sketches]]
+            [noir.response :as response]))
 
 (defn get-sketches []
   (->> (seq all-sketches)
        (map (fn [[k v]] (merge {:id k} v)))
        vec))
 
-(defremote sketches []
-  (get-sketches))
+(defroutes fetch-routes
+  (GET "/all-sketches" [] (response/json (get-sketches))))

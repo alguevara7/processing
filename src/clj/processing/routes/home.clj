@@ -1,8 +1,7 @@
 (ns processing.routes.home
-  (:use compojure.core
-        ring.util.response
-        [processing.models.simulated :only [all-sketches]])
-  (:require [processing.views.layout :as layout]
+  (:require [compojure.core :refer :all] 
+            [processing.views.layout :as layout]
+            [processing.models.simulated :refer [all-sketches]]
             [processing.util :as util]))
 
 (defn home-page []

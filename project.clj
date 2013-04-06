@@ -16,7 +16,7 @@
    [clabango "0.5"]
    [crate "0.2.4"]
    [domina "1.0.1" :exclusions [org.clojure/clojure]]
-   [fetch "0.1.0-alexguev-alpha1"]]
+   #_[fetch "0.1.0-alexguev-alpha1"]]
   :ring
   {:handler processing.handler/war-handler,
    :init processing.handler/init,
