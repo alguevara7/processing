@@ -36,9 +36,11 @@
   "FIXME: write description"
   :min-lein-version "2.0.0"
   :source-paths ["src/clj"]
+  :hooks [leiningen.cljsbuild]
   :cljsbuild {
     :builds [{:id "dev"
               :source-paths ["src/cljs"], 
+              :notify-command ["growlnotify" "-m" ""]
               :compiler {:pretty-print true, 
                          :output-to "resources/public/cljs/main.js",
                          :output-dir "resources/public/cljs/"
