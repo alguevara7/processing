@@ -28,7 +28,6 @@
 
 (defn render [old-state new-state]
   (dom/destroy-children! content)
-  (.log js/console (keys (first new-state)))
   (doseq [{:keys [id] :as s} new-state]
       (let [canvas (sketch-canvas id)]
         (load-sketch canvas [(str "/sketch/" id)])
