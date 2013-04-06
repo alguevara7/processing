@@ -9,4 +9,4 @@
        vec))
 
 (defroutes fetch-routes
-  (GET "/all-sketches" [] (response/json (get-sketches))))
+  (GET "/all-sketches" [] (response/edn (get-sketches))))

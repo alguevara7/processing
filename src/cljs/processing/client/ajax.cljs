@@ -1,13 +1,13 @@
 (ns processing.client.ajax
   (:require [goog.net.XhrIo :as xhr]
-            [goog.Uri :as uri]))
+            [goog.Uri :as uri]
+            [cljs.reader :as reader]))
 
 (defn default-handler [handler] 
   (fn [response]
     (if handler 
-      (let [result (js->clj 
-                     (.getResponseJson (.-target response))
-                     :keywordize-keys true)]
+      (let [result (reader/read-string 
+                     (.getResponseText (.-target response)))]
         (handler result)))))
 
 (defn params-to-str [params]
@@ -18,19 +18,19 @@
         (.setValues query-data k v)))
     (.toString query-data)))
 
-(defn ajax-request [url method handler params]
-  (xhr/send (str js/context url) 
+(defn ajax-request [rel-url method handler params]
+  (xhr/send rel-url
             (default-handler handler) 
             method 
             (params-to-str params)))
 
 (defn GET
-  ([url] (GET url nil))
-  ([url handler & params]
-    (ajax-request url "GET" handler params)))
+  ([rel-url] (GET rel-url nil))
+  ([rel-url handler & params]
+    (ajax-request rel-url "GET" handler params)))
 
 (defn POST
-  ([url] (POST url nil))
-  ([url handler & params]
-    (ajax-request url "POST" handler params)))
+  ([rel-url] (POST rel-url nil))
+  ([rel-url handler & params]
+    (ajax-request rel-url "POST" handler params)))
 
