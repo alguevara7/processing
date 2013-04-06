@@ -1,7 +1,8 @@
 (ns processing.handler
   (:use compojure.core
         processing.routes.home
-        processing.routes.fetch)
+        processing.routes.fetch
+        processing.routes.editor)
   (:require [noir.util.middleware :as middleware]
             [compojure.route :as route]))
 
@@ -24,7 +25,7 @@
   (println "shutting down..."))
 
 ;;append your application routes to the all-routes vector
-(def all-routes [home-routes fetch-routes])
+(def all-routes [home-routes editor-routes fetch-routes])
 
 (def app (-> all-routes
              (conj app-routes)

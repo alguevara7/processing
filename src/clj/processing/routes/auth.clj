@@ -1,6 +1,7 @@
 (ns processing.routes.auth
-  (:use compojure.core)
-  (:require [processing.views.layout :as layout]
+  (:use )
+  (:require [compojure.core :refer :all] 
+            [processing.views.layout :as layout]
             [noir.session :as session]
             [noir.response :as resp]
             [noir.validation :as vali]
