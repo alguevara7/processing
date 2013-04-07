@@ -44,6 +44,29 @@ body {
     margin: 20px 0;
 }
 
-.sketch-preview {
-  margin-top:14px;
+.sketch {
+  margin-bottom:0px;
+}
+
+.sketch-title-bar {
+  margin-bottom:-8px;
+  font-size: small;
+}
+
+.sketch-author-bar {
+  margin-bottom:-3px;
+  font-size: x-small;
+  /*background: black;*/  
+}
+
+.sketch-info-bar {
+  margin-bottom:14px;
+  height: 10px;
+  /*background: black;*/
+  
+}
+
+.sketch-info-bar-item {
+  margin-left:6px;
+  font-size: small;
 }

@@ -1,7 +1,6 @@
 # processing
 
 - run: **lein cljsbuild auto dev** to get clojurescript compilation going
-- clone and install the patched fetch from here **git@github.com:alexguev/fetch.git**
 - update your deps with **lein deps**
 - then launch a repl and execute **(start-server)**
 
