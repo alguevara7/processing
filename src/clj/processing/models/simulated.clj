@@ -15,11 +15,11 @@ int delay = 16;
 
 // Setup the Processing Canvas
 void setup(){
-  size( 200, 200 );
+  size( 600, 300 );
   strokeWeight( 10 );
   frameRate( 15 );
   X = width / 2;
-  Y = width / 2;
+  Y = height / 2;
   nX = X;
   nY = Y;  
 }

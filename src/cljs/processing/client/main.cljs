@@ -20,7 +20,7 @@
                             liked liked-by-user remixed shared ]} canvas]
    [:div.row
     [:div.span12
-     [:div.text-center 
+     [:div.text-left 
       [:div {:class "sketch-title-bar text-info"} title]
       [:div {:class "sketch-author-bar text-info"} (str "By " author)]
       [:div.sketch canvas]
