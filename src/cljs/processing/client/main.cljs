@@ -5,34 +5,24 @@
   (:use-macros [crate.def-macros :only [defpartial]]))
 
 (defpartial sketch-canvas [id]
-  [:canvas {:id (str "processing_" id)
-            :width 100 :height 100
+  [:canvas.sketch {:id (str "processing_" id)
             :tab-index 0
             :style "image-rendering: -webkit-optimize-contrast !important;"
             }])
 
-(defpartial sketch [{:keys [title description author liked remixed viewed]} canvas]
-  [:div.row 
-   [:div.span2 [:div.sketch-preview canvas]]
-   [:div.span10 
-    [:div.row [:div.span10 [:h6 title]]]
-    [:div.row [:div.span10 (str "By " author)]]
-    [:div.row [:div.span10 description]]
-    [:div.row [:div.span4
-               [:span [:i.icon-heart] liked]
-               [:span [:i.icon-random] remixed]
-               [:span [:i.icon-eye-open] viewed]]]
-   ]
-  ])  
-
-  ;[:div.sketch
-  ;   [:div.sketch-header
-  ;    [:span.sketch-title title] 
-  ;    [:span.sketch-author author] 
-  ;    [:span.sketch-liked liked] 
-  ;    [:span.sketch-remixed remixed] 
-  ;    [:span.sketch-viewed viewed]]
-  ;   [:div.sketch-content canvas]])
+(defpartial sketch [{:keys [title description author liked remixed shared height width]} canvas]
+   [:div.row
+    [:div.span12 
+     [:div {:class "sketch-title-bar text-info"} title]
+     [:div {:class "sketch-author-bar text-info"} (str "By " author)]
+     [:div.sketch canvas]
+     [:div.sketch-info-bar
+      [:span {:class "sketch-info-bar-item text-info"} [:i.icon-heart] liked]
+      [:span {:class "sketch-info-bar-item text-info"} [:i.icon-random] remixed]
+      [:span {:class "sketch-info-bar-item text-info"} [:i.icon-share] shared]
+     ]
+    ]
+   ])
 
 (defn load-sketch [canvas sources]  
   (.loadSketchFromSources js/Processing canvas (clj->js sources)))
