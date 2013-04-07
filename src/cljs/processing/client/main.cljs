@@ -31,7 +31,7 @@
     ]
    ])
 
-(defn load-sketch [canvas sources]  
+(defn load-sketch [canvas sources]    
   (.loadSketchFromSources js/Processing canvas (clj->js sources)))
 
 (def content (dom/by-id "gallery"))
@@ -54,6 +54,5 @@
   (dom/log "Initializing web client...")
   
   (ajax/GET "/all-sketches" (partial reset! application-state))
-  
   
   (dom/log "Web client initialized :)"))

@@ -14,19 +14,19 @@
 </div>
     	     	
  <textarea id="code" name="code">
+ {{sketch}}
 </textarea>
  <br/>
 <button type="button">render</button>
   
 {% endblock %}
 
-{% block scripts %}
-	<script>goog.require('processing.client.editor');</script>
-	<script>processing.client.editor.init();</script>	
-	<script src="{{context}}/js/codemirror/codemirror.js"></script>
-	<script src="{{context}}/js/codemirror/closebrackets.js"></script>
-	<script src="{{context}}/js/codemirror/modes/javascript.js"></script>
-	<script type="text/javascript">	   
+{% block scripts %}	
+  <script src="{{context}}/js/codemirror/codemirror.js"></script>
+  <script src="{{context}}/js/codemirror/closebrackets.js"></script>
+  <script src="{{context}}/js/codemirror/modes/javascript.js"></script>
+  <script type="text/javascript">	   
+	   var sketchId = "{{sketch-id}}";
 	   var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
 	     mode: { name: "javascript", htmlMode: false },
 	     autoCloseBrackets: true,
@@ -36,5 +36,7 @@
 	     searchMode: "inline"	     
 	   });
   </script>
+  <script>goog.require('processing.client.editor');</script>
+  <script>processing.client.editor.init();</script>	  
 {% endblock %}
 

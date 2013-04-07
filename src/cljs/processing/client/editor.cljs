@@ -3,13 +3,10 @@
             [domina.events :refer [listen!]]
             [processing.client.ajax :as ajax]))
 
-(defn render-sketch [sketch]
-  (.log js/console (str sketch))
-  (.loadSketchFromSources js/Processing (dom/by-id "sketch-canvas") sketch))
-
 (defn ^:export reloadScene []
-  (.log js/console "reloading")
-  (ajax/GET "/sketch" render-sketch))
+  (.log js/console (str "reloading " js/sketchId))
+  (if (not-empty js/sketchId)    
+    (.loadSketchFromSources js/Processing (dom/by-id "sketch-canvas") (clj->js [(str "/sketch/" js/sketchId)]))))
 
 (defn save-sketch [])
 
