@@ -5,7 +5,7 @@
             [processing.util :as util]))
 
 (defn home-page []
-  (layout/render "home.html" {}))
+  (layout/render "home.html"))
 
 (defn get-sketch [id]
   (get (get all-sketches id) :content))

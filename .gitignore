@@ -9,3 +9,6 @@ pom.xml
 /.env
 /resources/public/cljs
 .DS_Store
+.classpath
+.project
+.settings/*
