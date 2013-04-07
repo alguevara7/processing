@@ -12,7 +12,7 @@
 
 (defpartial sketch [{:keys [title description author liked remixed shared height width]} canvas]
    [:div.row
-    [:div.span12 
+    [:div.span12
      [:div {:class "sketch-title-bar text-info"} title]
      [:div {:class "sketch-author-bar text-info"} (str "By " author)]
      [:div.sketch canvas]
@@ -27,7 +27,7 @@
 (defn load-sketch [canvas sources]  
   (.loadSketchFromSources js/Processing canvas (clj->js sources)))
 
-(def content (dom/by-id "content"))
+(def content (dom/by-id "gallery"))
 
 (defn render [old-state new-state]
   (dom/destroy-children! content)

@@ -7,5 +7,5 @@
                  {}))
 
 (defroutes editor-routes
-  (GET "/editor" [id] (editor)))
+  (GET "/editor" [id] (editor [id])))
 
