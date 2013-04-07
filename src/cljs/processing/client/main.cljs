@@ -20,28 +20,30 @@
                             liked liked-by-user remixed shared ]} canvas]
    [:div.row
     [:div.span12
-     [:div {:class "sketch-title-bar text-info"} title]
-     [:div {:class "sketch-author-bar text-info"} (str "By " author)]
-     [:div.sketch canvas]
-     [:div.sketch-info-bar
-      (sketch-like liked liked-by-user)
-      [:span {:class "sketch-info-bar-item text-info"} [:i.icon-random] remixed]
-      [:span {:class "sketch-info-bar-item text-info"} [:i.icon-share] shared]
-     ]
-    ]
-   ])
+     [:div.text-center 
+      [:div {:class "sketch-title-bar text-info"} title]
+      [:div {:class "sketch-author-bar text-info"} (str "By " author)]
+      [:div.sketch canvas]
+      [:div.sketch-info-bar
+        (sketch-like liked liked-by-user)
+        [:span {:class "sketch-info-bar-item text-info"} [:i.icon-random] remixed]
+        [:span {:class "sketch-info-bar-item text-info"} [:i.icon-share] shared]]]]])
+
+(defpartial sepatator []
+  [:hr])
 
 (defn load-sketch [canvas sources]    
   (.loadSketchFromSources js/Processing canvas (clj->js sources)))
 
-(def content (dom/by-id "gallery"))
+(def gallery (dom/by-id "gallery"))
 
 (defn render [old-state new-state]
-  (dom/destroy-children! content)
+  (dom/destroy-children! gallery)
   (doseq [{:keys [id] :as s} new-state]
       (let [canvas (sketch-canvas id)]
         (load-sketch canvas [(str "/sketch/" id)])
-        (dom/append! content (sketch s canvas)))))
+        (dom/append! gallery (sketch s canvas))
+        (dom/append! gallery (sepatator)))))
 
 ;; application state
 (def application-state (atom []))
