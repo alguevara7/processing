@@ -10,14 +10,21 @@
             :style "image-rendering: -webkit-optimize-contrast !important;"
             }])
 
-(defpartial sketch [{:keys [title description author liked remixed shared height width]} canvas]
+(defpartial sketch-like [liked liked-by-user]
+  [:span 
+   {:class "sketch-info-bar-item text-info"}
+   (if liked-by-user [:i.icon-heart] [:i.icon-heart-empty])
+   liked])
+
+(defpartial sketch [{:keys [title description author 
+                            liked liked-by-user remixed shared ]} canvas]
    [:div.row
     [:div.span12
      [:div {:class "sketch-title-bar text-info"} title]
      [:div {:class "sketch-author-bar text-info"} (str "By " author)]
      [:div.sketch canvas]
      [:div.sketch-info-bar
-      [:span {:class "sketch-info-bar-item text-info"} [:i.icon-heart] liked]
+      (sketch-like liked liked-by-user)
       [:span {:class "sketch-info-bar-item text-info"} [:i.icon-random] remixed]
       [:span {:class "sketch-info-bar-item text-info"} [:i.icon-share] shared]
      ]

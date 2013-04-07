@@ -54,14 +54,24 @@ void mouseMoved(){
 }
 ")
 
-(def description "This is a simulation of the basic demographic / genealogical process. Individuals are born and individuals die. This causes lineages to branch and to disappear, and causes the population to share a common ancestor at some time in the past. The coalescent provides a mathematical description of these patterns of ancestry.")
+(def description 
+  "This is a simulation of the basic demographic / genealogical process. 
+  Individuals are born and individuals die. This causes lineages to branch and to disappear, 
+  and causes the population to share a common ancestor at some time in the past. The coalescent 
+  provides a mathematical description of these patterns of ancestry.")
 
 (def all-sketches
-  {"1" {:title "El Circulo 1" :description description :content sketch :author "John Doe"
-        :liked 5 :remixed 2 :shared 10 :height 200 :with 200}
+  {"1" {:title "El Circulo 1" :description description :content sketch :author "John Doe" 
+        :height 200 :with 200
+        :liked 5 :remixed 2 :shared 10
+        :liked-by-user false}
    "2" {:title "El Circulo 2" :description description :content sketch :author "John Doe"
-        :liked 5 :remixed 2 :shared 10 :height 200 :with 200}
+        :height 200 :with 200
+        :liked 5 :remixed 2 :shared 10
+        :liked-by-user false}
    "3" {:title "El Circulo 3" :description description :content sketch :author "John Doe"
-        :liked 5 :remixed 2 :shared 10 :height 200 :with 200}
+        :height 200 :with 200
+        :liked 5 :remixed 2 :shared 10
+        :liked-by-user true}
   })
    
