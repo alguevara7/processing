@@ -56,6 +56,8 @@ void mouseMoved(){
 
 (def description "This is a simulation of the basic demographic / genealogical process. Individuals are born and individuals die. This causes lineages to branch and to disappear, and causes the population to share a common ancestor at some time in the past. The coalescent provides a mathematical description of these patterns of ancestry.")
 
+(defn get-sketch [user-id sketch-id] sketch)
+
 (def all-sketches
   {"1" {:title "El Circulo 1" :description description :content sketch :liked 5 :remixed 2 :viewed 10 :author "John Doe"}
    "2" {:title "El Circulo 2" :description description :content sketch :liked 5 :remixed 2 :viewed 10 :author "John Doe"}

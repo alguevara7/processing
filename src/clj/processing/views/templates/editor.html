@@ -4,35 +4,37 @@
 <style type="text/css">
       .CodeMirror {border-top: 1px solid #888; border-bottom: 1px solid #888;}
 </style>
-     	
+
+<div class="hero-unit">     	
+<canvas id="sketch-canvas" 
+		width=200 
+		height=100 
+		style="image-rendering: -webkit-optimize-contrast !important;">
+</canvas>
+</div>
+    	     	
  <textarea id="code" name="code">
 </textarea>
- 
-
+ <br/>
+<button type="button">render</button>
   
 {% endblock %}
 
 {% block scripts %}
-	<script>goog.require('processing.client.editor');</script>	
+	<script>goog.require('processing.client.editor');</script>
+	<script>processing.client.editor.init();</script>	
 	<script src="{{context}}/js/codemirror/codemirror.js"></script>
 	<script src="{{context}}/js/codemirror/closebrackets.js"></script>
 	<script src="{{context}}/js/codemirror/modes/javascript.js"></script>
-	<script type="text/javascript">
-
+	<script type="text/javascript">	   
 	   var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
 	     mode: { name: "javascript", htmlMode: false },
 	     autoCloseBrackets: true,
 	     lineNumbers: true,
 	     tabMode: "indent",
 	     matchBrackets: true,	     
-	     searchMode: 'inline',
-	     onCursorActivity: function () {
-	       editor.setLineClass(hlLine, null);
-	       hlLine = editor.setLineClass(editor.getCursor().line, "activeline");
-	     }
+	     searchMode: "inline"	     
 	   });
-	
-	   var hlLine = editor.setLineClass(0, "activeline");
   </script>
 {% endblock %}
 
