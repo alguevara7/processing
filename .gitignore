@@ -8,6 +8,7 @@ pom.xml
 /.lein-*
 /.env
 /resources/public/cljs
+/resources/public/cljs0
 .DS_Store
 .classpath
 .project

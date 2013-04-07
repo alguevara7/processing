@@ -40,10 +40,17 @@
   :cljsbuild {
     :builds [{:id "dev"
               :source-paths ["src/cljs"], 
-              :notify-command ["growlnotify" "-m" ""]
               :compiler {:pretty-print true, 
                          :output-to "resources/public/cljs/main.js",
                          :output-dir "resources/public/cljs/"
+                         :optimizations :none}}
+             {:id "dev-growl"
+              :source-paths ["src/cljs"], 
+              :notify-command ["growlnotify" "-m" ""]
+              :compiler {:pretty-print true, 
+                         ;AG must be different from the dev config :( added a link from cljs to cljs0 in my local env
+                         :output-to "resources/public/cljs0/main.js", 
+                         :output-dir "resources/public/cljs0/"
                          :optimizations :none}}
              {:id "prod"
               :source-paths ["src/cljs"], 
