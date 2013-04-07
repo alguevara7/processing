@@ -37,7 +37,7 @@
 (defn load-sketch [canvas sources]  
   (.loadSketchFromSources js/Processing canvas (clj->js sources)))
 
-(def content (dom/by-id "content"))
+(def content (dom/by-id "gallery"))
 
 (defn render [old-state new-state]
   (dom/destroy-children! content)

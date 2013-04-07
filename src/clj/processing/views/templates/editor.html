@@ -1,0 +1,38 @@
+ {% extends "processing/views/templates/base.html" %} 
+ {% block content %}
+ <link href="{{context}}/css/codemirror.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+      .CodeMirror {border-top: 1px solid #888; border-bottom: 1px solid #888;}
+</style>
+     	
+ <textarea id="code" name="code">
+</textarea>
+ 
+
+  
+{% endblock %}
+
+{% block scripts %}
+	<script>goog.require('processing.client.editor');</script>	
+	<script src="{{context}}/js/codemirror/codemirror.js"></script>
+	<script src="{{context}}/js/codemirror/closebrackets.js"></script>
+	<script src="{{context}}/js/codemirror/modes/javascript.js"></script>
+	<script type="text/javascript">
+
+	   var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+	     mode: { name: "javascript", htmlMode: false },
+	     autoCloseBrackets: true,
+	     lineNumbers: true,
+	     tabMode: "indent",
+	     matchBrackets: true,	     
+	     searchMode: 'inline',
+	     onCursorActivity: function () {
+	       editor.setLineClass(hlLine, null);
+	       hlLine = editor.setLineClass(editor.getCursor().line, "activeline");
+	     }
+	   });
+	
+	   var hlLine = editor.setLineClass(0, "activeline");
+  </script>
+{% endblock %}
+
