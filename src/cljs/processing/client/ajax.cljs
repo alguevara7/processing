@@ -19,7 +19,7 @@
     (.toString query-data)))
 
 (defn ajax-request [rel-url method handler params]
-  (xhr/send rel-url
+  (xhr/send (str js/context rel-url)
             (default-handler handler) 
             method 
             (params-to-str params)))

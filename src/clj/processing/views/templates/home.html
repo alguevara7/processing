@@ -1,8 +1,12 @@
  {% extends "processing/views/templates/base.html" %} 
  {% block content %}
 
-<div id="content"/>
-
+	<div id="content"/>
 {{content}} 
+{% endblock %}
+
+{% block scripts %}
+	<script>goog.require('processing.client.main');</script>
+	<script>processing.client.main.init();</script>
 {% endblock %}
 
