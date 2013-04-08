@@ -23,8 +23,8 @@
 (defn register []
   [:a])
 
-(defn ui []
-  (if (nil? @user-id) 
+(defn ui [new-user-id]
+  (if (nil? new-user-id) 
    (template/node (login)) 
    (template/node (logout))))
 
@@ -41,16 +41,16 @@
   (util/remove-cookie "user-id")
   (reset! user-id nil))
 
-(defn register-event-handlers []
+(defn register-event-handlers [new-user-id]
   (listen! (sel1 :#login-button) :click handle-login)
   (when-let [logout (sel1 :#logout-button)]
     (listen! logout :click handle-logout)))
 
-(defn render [old-user-id new-user-id]
-  (replace-contents! auth-li (ui))
-  (register-event-handlers))
+(defn render [_ new-user-id]
+  (replace-contents! auth-li (ui new-user-id))
+  (register-event-handlers new-user-id))
 
-(add-watch user-id :app-watcher 
+(add-watch user-id :auth-watcher
   (fn [key reference old new] 
     (render old new)))
 

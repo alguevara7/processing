@@ -47,9 +47,9 @@
 (defn load-sketch [canvas sources]    
   (.loadSketchFromSources js/Processing canvas (clj->js sources)))
 
-(defn ui [sketches]
+(defn ui [new-sketches]
   (let [root (template/node [:div])]
-    (for [{:keys [id] :as s} sketches]
+    (for [{:keys [id] :as s} new-sketches]
      (let [canvas (sketch-canvas id)]
        (load-sketch canvas [(str "/sketch/" id)])
        (append-template! root (sketch s canvas))
@@ -60,15 +60,15 @@
     (toggle-class! me "icon-heart")
     (toggle-class! me "icon-heart-empty")))
 
-(defn register-event-handlers [sketches]
-  (doseq [{:keys [id] :as s} sketches]
+(defn register-event-handlers [new-sketches]
+  (doseq [{:keys [id] :as s} new-sketches]
     (listen! (sel1 (str "#sketch-like-" id)) :click handle-like)))
 
 (defn render [_ new-sketches]
   (replace-contents! gallery (ui new-sketches))
   (register-event-handlers new-sketches))
 
-(add-watch sketches :sketches-watcher 
+(add-watch sketches :gallery-watcher 
   (fn [key reference old new]
     (render old new)))
 
