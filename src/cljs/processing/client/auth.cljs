@@ -1,7 +1,8 @@
 (ns processing.client.auth
   (:require [dommy.core :refer [listen! replace-contents!]] 
             [dommy.template :as template]
-            [processing.client.ajax :as ajax])
+            [processing.client.ajax :as ajax]
+            [processing.client.util :as util])
   (:require-macros [dommy.macros :refer [sel1]]))
 
 (def user-id (atom nil))
@@ -26,14 +27,16 @@
    (template/node (login)) 
    (template/node (logout))))
 
+(defn handle-login [e]
+  (reset! user-id "id"))
+
+(defn handle-logout [e]
+  (reset! user-id nil))
+
 (defn register-event-handlers []
-  (listen! (sel1 :#login) :click
-   (fn [e] 
-     (reset! user-id "id")))
+  (listen! (sel1 :#login) :click handle-login)
   (when-let [logout (sel1 :#logout)]
-    (listen! logout :click
-     (fn [e] 
-       (reset! user-id nil)))))
+    (listen! logout :click handle-logout)))
 
 (defn render [old-user-id new-user-id]
   (replace-contents! auth-li (ui))
