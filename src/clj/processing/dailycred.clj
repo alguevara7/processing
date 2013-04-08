@@ -18,4 +18,4 @@
 
 ;(sign-up "user2@halfrunt.net" "user2" "password2")
 
-(sign-in "user2" "password2")
+;(sign-in "user2" "password2")
