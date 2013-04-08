@@ -114,3 +114,12 @@ hr::after {
   background-image: -ms-linear-gradient(left, #f7f6f4, #c3c3c3, #f7f6f4);
   background-image: -o-linear-gradient(left, #f7f6f4, #c3c3c3, #f7f6f4);
 }
+
+.CodeMirror {
+  border: 1px solid #eee;
+  height: auto;
+}
+.CodeMirror-scroll {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
