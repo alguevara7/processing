@@ -65,15 +65,18 @@ void mouseMoved(){
 (def all-sketches
   {"1" {:title "El Circulo 1" :description description :content sketch :author "John Doe" 
         :height 200 :with 200
-        :liked 5 :remixed 2 :shared 10
-        :liked-by-user false}
+        :likes 5 :remixed 2 :shared 10
+        :liked-by-user false
+        :created-by "db0e21a8-4f80-44a3-bb54-31822637d6c9"}
    "2" {:title "El Circulo 2" :description description :content sketch :author "John Doe"
         :height 200 :with 200
-        :liked 5 :remixed 2 :shared 10
-        :liked-by-user false}
+        :likes 5 :remixed 2 :shared 10
+        :liked-by-user false
+        :created-by "72d4c6a2-76e9-43db-8c28-c4051e8e4894"}
    "3" {:title "El Circulo 3" :description description :content sketch :author "John Doe"
         :height 200 :with 200
-        :liked 5 :remixed 2 :shared 10
-        :liked-by-user true}
+        :likes 5 :remixed 2 :shared 10
+        :liked-by-user true
+        :created-by "72d4c6a2-76e9-43db-8c28-c4051e8e4894"}
   })
    
