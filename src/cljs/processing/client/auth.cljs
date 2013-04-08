@@ -28,14 +28,16 @@
    (template/node (login)) 
    (template/node (logout))))
 
+(defn login-handler [result]
+  (when result
+    (util/set-cookie "user-id" result 3600)
+    (reset! user-id result)))
+
 (defn handle-login [e]
-  (ajax/POST "/login" 
-             (fn [result] 
-              (when result
-                (util/set-cookie "user-id" result 3600)
-                (reset! user-id result)))
-            [:login (dom/value (sel1 :#login))] 
-            [:pass (dom/value (sel1 :#pass))]))
+  (ajax/POST "/login"
+             {:handler login-handler
+              :params  {:login (dom/value (sel1 :#login))
+                        :pass (dom/value (sel1 :#pass))}}))
 
 (defn handle-logout [e]
   (util/remove-cookie "user-id")

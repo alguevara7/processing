@@ -5,32 +5,35 @@
             [cljs.reader :as reader]
             [goog.structs :as structs]))
 
-(defn default-handler [handler] 
+(defn default-handler [format handler] 
   (fn [response]
     (if handler 
-      (let [result (reader/read-string 
-                     (.getResponseText (.-target response)))]
+      (let [response-text (.getResponseText (.-target response))            
+            result (condp = (or format :edn)
+                     :json (js->clj response-text)
+                     :edn (reader/read-string response-text)
+                     (throw (js/Error. (str "unrecognized format: " format))))]
         (handler result)))))
 
 (defn params-to-str [params]
-  (let [m (apply hash-map (mapcat identity params))
-        cur (clj->js m)
-        query (query-data/createFromMap (structs/Map. cur))]
-    (str query)))
+  (if params
+    (-> params
+        clj->js
+        structs/Map.
+        query-data/createFromMap
+        .toString)))
 
-(defn ajax-request [rel-url method handler params]
+(defn ajax-request [rel-url method format handler params]
+  (.log js/console (params-to-str params))
   (xhr/send (str js/context rel-url)
-            (default-handler handler) 
+            (default-handler format handler) 
             method 
             (params-to-str params)))
 
-(defn GET
-  ([rel-url] (GET rel-url nil))
-  ([rel-url handler & params]
-    (ajax-request rel-url "GET" handler params)))
+(defn GET [rel-url {:keys [handler params format]}]
+  (ajax-request rel-url "GET" format handler params))
 
-(defn POST
-  ([rel-url] (POST rel-url nil))
-  ([rel-url handler & params]
-    (ajax-request rel-url "POST" handler params)))
+(defn POST [rel-url {:keys [handler params format]}]
+  (ajax-request rel-url "POST" format handler params))
+
 

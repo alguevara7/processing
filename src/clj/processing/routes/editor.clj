@@ -10,9 +10,7 @@
   (layout/render "editor.html" {:sketch-id sketch-id
                                 :sketch (db/get-sketch (session/get :user-id) sketch-id)}))
 
-(defroutes editor-routes
-  (GET "/editor" _ (editor))
+(defroutes editor-routes  
+  (GET "/editor" [] (editor))
   (GET "/editor/:sketch-id" [sketch-id] (editor sketch-id)))
-
-
 
