@@ -1,48 +1,57 @@
 (ns processing.routes.auth
-  (:use )
-  (:require [compojure.core :refer :all] 
+  (:require [compojure.core :refer :all]
             [processing.views.layout :as layout]
             [noir.session :as session]
+            [noir.cookies :as cookies]
             [noir.response :as resp]
             [noir.validation :as vali]
-            [noir.util.crypt :as crypt]
-            [processing.models.db :as db]))
+            [processing.dailycred :as dailycred]))
 
-(defn valid? [id pass pass1]
-  (vali/rule (vali/has-value? id)
-             [:id "user ID is required"])
+(defn valid? [email username pass pass1]
+  (vali/rule (vali/has-value? email)
+             [:email "email is required"])
+  (vali/rule (vali/has-value? username)
+             [:username "username is required"])
   (vali/rule (vali/min-length? pass 5)
              [:pass "password must be at least 5 characters"])
   (vali/rule (= pass pass1)
              [:pass1 "entered passwords do not match"])
   (not (vali/errors? :id :pass :pass1)))
 
-(defn register [& [id]]
+(defn register [& [email username]]
   (layout/render
     "registration.html"
-    {:id id
-     :id-error (vali/on-error :id first)
+    {:email email
+     :username username
+     :email-error (vali/on-error :email first)
+     :username-error (vali/on-error :username first)
      :pass-error (vali/on-error :pass first)
      :pass1-error (vali/on-error :pass1 first)}))
 
-(defn handle-registration [id pass pass1]
-  (if (valid? id pass pass1)
+; AG: tbd move to client side
+(defn handle-registration [email username pass pass1]
+  (if (valid? email username pass pass1)
     (try
-      (do
-        (db/create-user {:id id :pass (crypt/encrypt pass)})
-        (session/put! :user id)
-        (resp/redirect "/"))
+      (let [response (dailycred/sign-up email username pass)]
+        (if (= (:worked response) true)
+          (do 
+            (cookies/put! :user-id (str (-> response :user :id)))
+            (resp/redirect "/"))
+          (do 
+            (vali/rule false [:email (-> response :errors first :message)])
+            (register email username))))
       (catch Exception ex
-        (vali/rule false [:id (.getMessage ex)])
-        (register)))
-    (register id)))
+        (vali/rule false [:email (.getMessage ex)])
+        (register email username)))
+    (register email username)))
 
-(defn handle-login [id pass]
-  (let [user (db/get-user id)]
-    (if (and user (crypt/compare pass (:pass user)))
-      (session/put! :user id)
-      )
-    (resp/redirect "/")))
+(defn handle-login [login pass]
+  (let [response (dailycred/sign-in login pass)]
+    (when (= (:worked response) true)
+      (let [user-id (-> response :user :id)]
+        (session/put! :user user-id)
+        user-id)))
+  )
 
 (defn logout []
   (session/clear!)
@@ -52,11 +61,10 @@
   (GET "/register" []
        (register))
 
-  (POST "/register" [id pass pass1]
-        (handle-registration id pass pass1))
-
-  (POST "/login" [id pass]
-        (handle-login id pass))
+  (POST "/register" [email username pass pass1]
+        (handle-registration email username pass pass1))
+  
+  (POST "/login" [login pass] (resp/edn (handle-login login pass)))
 
   (POST "/logout" []
         (logout)))

@@ -1,28 +1,30 @@
-
 {% extends "processing/views/templates/base.html" %}
-
-
-
-{% block navbar %}
-
-
-{% endblock %}
-
 
 
 {% block content %}
 
 		<form action="/register" method="POST">
-			<label for="id">user id</label>
+			<label for="id">email</label>
 			
-{% if id-error %}
+{% if email-error %}
 
-			<div class="error">{{id-error}}</div>
+			<div class="error">{{email-error}}</div>
 			
 {% endif %}
 
 			<p>
-				<input id="id" name="id" tabindex="1" type="text" value={{id}}></input>
+        <input id="email" name="email" tabindex="1" type="text" value="{{email}}"/></input>
+			</p>
+      <label for="username">username</label>
+			
+{% if username-error %}
+
+			<div class="error">{{username-error}}</div>
+			
+{% endif %}
+
+			<p>
+				<input id="username" name="username" tabindex="1" type="text" value="{{username}}"></input>
 			</p>
 			<label for="pass">password</label>
 			
@@ -51,4 +53,7 @@
 
 {% endblock %}
 
-
+{% block scripts %}
+	<script>goog.require('processing.client.main');</script>
+	<script>processing.client.main.init();</script>
+{% endblock %}

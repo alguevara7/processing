@@ -1,7 +1,9 @@
 (ns processing.client.ajax
   (:require [goog.net.XhrIo :as xhr]
             [goog.Uri :as uri]
-            [cljs.reader :as reader]))
+            [goog.Uri.QueryData :as query-data]
+            [cljs.reader :as reader]
+            [goog.structs :as structs]))
 
 (defn default-handler [handler] 
   (fn [response]
@@ -11,12 +13,10 @@
         (handler result)))))
 
 (defn params-to-str [params]
-  (let [query-data (uri/QueryData.)] 
-    (doseq [[k v] params] 
-      (if (coll? v)
-        (.setValues query-data (str k "[]") (apply array v))
-        (.setValues query-data k v)))
-    (.toString query-data)))
+  (let [m (apply hash-map (mapcat identity params))
+        cur (clj->js m)
+        query (query-data/createFromMap (structs/Map. cur))]
+    (str query)))
 
 (defn ajax-request [rel-url method handler params]
   (xhr/send (str js/context rel-url)

@@ -2,7 +2,8 @@
   (:require [dommy.core :refer [listen! replace-contents!]] 
             [dommy.template :as template]
             [processing.client.ajax :as ajax]
-            [processing.client.util :as util])
+            [processing.client.util :as util]
+            [domina :as dom])
   (:require-macros [dommy.macros :refer [sel1]]))
 
 (def user-id (atom nil))
@@ -11,13 +12,13 @@
 
 (defn login []
   [:div.navbar-form
-   [:input#username.span2 {:type "text" :placeholder "user name" :style {:margin-right "5px"}}]  
-   [:input#password.span2 {:type "password" :placeholder "password" :style {:margin-right "5px"}}]
-   [:input#login.btn {:value "Login" :type "submit"}]])
+   [:input#login.span2 {:type "text" :placeholder "user name" :style {:margin-right "5px"}}]  
+   [:input#pass.span2 {:type "password" :placeholder "password" :style {:margin-right "5px"}}]
+   [:input#login-button.btn {:value "Login" :type "submit"}]])
 
 (defn logout []
   [:div.navbar-form
-   [:input#logout.btn {:value "Logout" :type "submit"}]])
+   [:input#logout-button.btn {:value "Logout" :type "submit"}]])
 
 (defn register []
   [:a])
@@ -28,14 +29,21 @@
    (template/node (logout))))
 
 (defn handle-login [e]
-  (reset! user-id "id"))
+  (ajax/POST "/login" 
+             (fn [result] 
+              (when result
+                (util/set-cookie "user-id" result 3600)
+                (reset! user-id result)))
+            [:login (dom/value (sel1 :#login))] 
+            [:pass (dom/value (sel1 :#pass))]))
 
 (defn handle-logout [e]
+  (util/remove-cookie "user-id")
   (reset! user-id nil))
 
 (defn register-event-handlers []
-  (listen! (sel1 :#login) :click handle-login)
-  (when-let [logout (sel1 :#logout)]
+  (listen! (sel1 :#login-button) :click handle-login)
+  (when-let [logout (sel1 :#logout-button)]
     (listen! logout :click handle-logout)))
 
 (defn render [old-user-id new-user-id]
@@ -47,4 +55,5 @@
     (render old new)))
 
 (defn init []
-  (reset! user-id nil))
+  (->> (util/get-cookie "user-id") 
+       (reset! user-id)))
