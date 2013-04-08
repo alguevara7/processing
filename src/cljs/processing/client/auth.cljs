@@ -1,5 +1,5 @@
 (ns processing.client.auth
-  (:require [dommy.core :refer [listen! replace-contents!]]
+  (:require [dommy.core :refer [listen! replace-contents!]] 
             [dommy.template :as template]
             [processing.client.ajax :as ajax]
             [processing.client.util :as util]
@@ -23,8 +23,8 @@
 (defn register []
   [:a])
 
-(defn ui [new-user-id]
-  (if new-user-id
+(defn ui []
+  (if (nil? @user-id) 
    (template/node (login)) 
    (template/node (logout))))
 
@@ -32,7 +32,6 @@
   (ajax/POST "/login" 
              (fn [result] 
               (when result
-                (js/alert result)
                 (util/set-cookie "user-id" result 3600)
                 (reset! user-id result)))
             [:login (dom/value (sel1 :#login))] 
@@ -48,10 +47,10 @@
     (listen! logout :click handle-logout)))
 
 (defn render [old-user-id new-user-id]
-  (replace-contents! auth-li (ui new-user-id))
+  (replace-contents! auth-li (ui))
   (register-event-handlers))
 
-(add-watch user-id :auth-watcher 
+(add-watch user-id :app-watcher 
   (fn [key reference old new] 
     (render old new)))
 
