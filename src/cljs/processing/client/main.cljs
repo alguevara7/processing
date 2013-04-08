@@ -1,6 +1,7 @@
 (ns processing.client.main
   (:require [dommy.template :as template]            
             [domina :as dom]
+            [processing.client.auth :as auth]
             [processing.client.ajax :as ajax]))
 
 (defn append! [parent child]
@@ -58,7 +59,7 @@
 
 (defn ^:export init [] 
   (dom/log "Initializing web client...")
-  
+  (auth/init)
   (ajax/GET "/all-sketches" (partial reset! application-state))
   
   (dom/log "Web client initialized :)"))

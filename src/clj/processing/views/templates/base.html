@@ -28,23 +28,12 @@
 	                        </li>
 	                    </ul>
 	                    <ul class="nav pull-right">						
-					{% if user %}
-							<li>
-	                            <form action="/logout" class="navbar-form" method="POST">
-	                                <input class="btn" type="submit" value="Logout">
-	                            </form>
-	                        </li>                        
-					{% else %}
-	                        						<li>
-	                            <form action="/login" class="navbar-form" method="POST">
-	                                <input class="span2" id="id" name="id" placeholder="user id" style="margin-right: 5px" type="text"><input class="span2" id="pass" name="pass" placeholder="password" style="margin-right: 5px" type="password"><input class="btn" type="submit" value="Login">
-	                            </form>
+							            <li id="auth-li">
 	                        </li>
 	                        <li>
 	                            <a href="{{context}}/register">Register</a>
 	                        </li>						
-					{% endif %}
-						</ul>
+						          </ul>
 	                </div>
 	            </div>
 	        </div>
