@@ -1,35 +1,39 @@
 (ns processing.client.main
-  (:require [crate.core :as crate]            
+  (:require [dommy.template :as template]            
             [domina :as dom]
-            [processing.client.ajax :as ajax])
-  (:use-macros [crate.def-macros :only [defpartial]]))
+            [processing.client.ajax :as ajax]))
 
-(defpartial sketch-canvas [id]
-  [:canvas.sketch {:id (str "processing_" id)
-            :tab-index 0
-            :style "image-rendering: -webkit-optimize-contrast !important;"
-            }])
+(defn append! [parent child]
+  (dom/append! parent (template/node child)))
 
-(defpartial sketch-like [liked liked-by-user]
+(defn sketch-canvas [id]
+  (template/node
+    [:canvas 
+     {:classes ["sketch"]
+      :tab-index 0
+      :style {:image-rendering "-webkit-optimize-contrast !important"}
+      }]))
+
+(defn sketch-like [liked liked-by-user]
   [:span 
-   {:class "sketch-info-bar-item text-info"}
+   {:classes ["sketch-info-bar-item" "text-info"]}
    (if liked-by-user [:i.icon-heart] [:i.icon-heart-empty])
    liked])
 
-(defpartial sketch [{:keys [title description author 
-                            liked liked-by-user remixed shared ]} canvas]
-   [:div.row
-    [:div.span12
-     [:div.text-left 
-      [:div {:class "sketch-title-bar text-info"} title]
-      [:div {:class "sketch-author-bar text-info"} (str "By " author)]
-      [:div.sketch canvas]
-      [:div.sketch-info-bar
-        (sketch-like liked liked-by-user)
-        [:span {:class "sketch-info-bar-item text-info"} [:i.icon-random] remixed]
-        [:span {:class "sketch-info-bar-item text-info"} [:i.icon-share] shared]]]]])
+(defn sketch [{:keys [title description author liked liked-by-user remixed shared]} 
+                 canvas]
+  [:div.row
+   [:div.span12
+    [:div.text-left 
+     [:div {:classes ["sketch-title-bar" "text-info"]} title]
+     [:div {:classes ["sketch-author-bar" "text-info"]} (str "By " author)]
+     [:div.sketch canvas]
+     [:div.sketch-info-bar
+      (sketch-like liked liked-by-user)
+      [:span {:classes ["sketch-info-bar-item" "text-info"]} [:i.icon-random] remixed]
+      [:span {:classes ["sketch-info-bar-item" "text-info"]} [:i.icon-share] shared]]]]])
 
-(defpartial sepatator []
+(defn sepatator []
   [:hr])
 
 (defn load-sketch [canvas sources]    
@@ -42,8 +46,8 @@
   (doseq [{:keys [id] :as s} new-state]
       (let [canvas (sketch-canvas id)]
         (load-sketch canvas [(str "/sketch/" id)])
-        (dom/append! gallery (sketch s canvas))
-        (dom/append! gallery (sepatator)))))
+        (append! gallery (sketch s canvas))
+        (append! gallery (sepatator)))))
 
 ;; application state
 (def application-state (atom []))

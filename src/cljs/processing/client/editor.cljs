@@ -1,6 +1,7 @@
 (ns processing.client.editor
   (:require [domina :as dom]
             [domina.events :refer [listen!]]
+            [dommy.template :as template]
             [processing.client.ajax :as ajax]))
 
 (defn ^:export reloadScene []
