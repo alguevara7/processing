@@ -1,11 +1,12 @@
 (ns processing.handler
-  (:use compojure.core
-        processing.routes.home
-        processing.routes.auth
-        processing.routes.fetch
-        processing.routes.editor)
-  (:require [noir.util.middleware :as middleware]
-            [compojure.route :as route]))
+  (:require [compojure.core :refer :all]            
+            [noir.util.middleware :as middleware]
+            [processing.models.db :as db]
+            [compojure.route :as route]
+            [processing.routes.home :refer :all]
+            [processing.routes.auth :refer :all]
+            [processing.routes.fetch :refer :all]
+            [processing.routes.editor :refer :all]))
 
 (defroutes app-routes
   (route/resources "/")
@@ -16,7 +17,8 @@
    app is deployed as a servlet on
    an app server such as Tomcat
    put any initialization code here"
-  []
+  []  
+  (db/migrate)
   (println "processing started successfully..."))
 
 (defn destroy
