@@ -2,7 +2,7 @@
   (:require [dommy.core :refer [listen! replace-contents! append!]]
             [dommy.attrs :refer [toggle-class!]]
             [dommy.template :as template]
-            [processing.client.ajax :as ajax])
+            [ajax.core :as ajax])
   (:require-macros [dommy.macros :refer [sel1]]))
 
 (def sketches (atom []))

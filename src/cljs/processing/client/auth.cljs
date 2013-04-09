@@ -1,7 +1,7 @@
 (ns processing.client.auth
   (:require [dommy.core :refer [listen! replace-contents!]] 
             [dommy.template :as template]
-            [processing.client.ajax :as ajax]
+            [ajax.core :as ajax]
             [processing.client.util :as util]
             [domina :as dom])
   (:require-macros [dommy.macros :refer [sel1]]))

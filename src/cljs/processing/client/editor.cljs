@@ -2,7 +2,7 @@
   (:require [domina :as dom]
             [domina.events :refer [listen!]]
             [dommy.template :as template]
-            [processing.client.ajax :as ajax]))
+            [ajax.core :as ajax]))
 
 (defn ^:export reloadScene []
   (.log js/console (str "reloading " js/sketchId))

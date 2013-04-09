@@ -19,6 +19,8 @@
                  com.sun.jdmk/jmxtools 
                  com.sun.jmx/jmxri]]
    [clabango "0.5"]
+   [org.clojure/clojurescript "0.0-1586"]
+   [cljs-ajax "0.1.0"]
    [prismatic/dommy "0.1.0"]   
    [domina "1.0.1" 
     :exclusions [org.clojure/clojure]]]
@@ -56,7 +58,7 @@
                          :optimizations :none}}
              {:id "dev-growl"
               :source-paths ["src/cljs"], 
-              :notify-command ["growlnotify" "-m" ""]
+              ;:notify-command ["growlnotify" "-m" ""]
               :compiler {:pretty-print true, 
                          ;AG must be different from the dev config :( added a link from cljs to cljs0 in my local env
                          :output-to "resources/public/cljs0/main.js", 
