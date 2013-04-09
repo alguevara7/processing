@@ -9,7 +9,7 @@
    [com.taoensso/timbre "1.5.2"]
    [com.taoensso/tower "1.2.0"]
    [markdown-clj "0.9.19"]
-   [org.clojure/java.jdbc "0.2.3"]
+   [org.clojure/java.jdbc "0.3.0-alpha1"]
    [ragtime "0.3.2"]
    [postgresql/postgresql "9.1-901.jdbc4"]
    [korma "0.3.0-RC2"]
