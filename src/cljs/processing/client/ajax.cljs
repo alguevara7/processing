@@ -1,23 +1,10 @@
-(ns ajax.core  
+(ns processing.client.ajax
   (:require [goog.net.XhrIo :as xhr]
             [goog.Uri :as uri]            
             [goog.Uri.QueryData :as query-data]
             [goog.events :as events]
             [goog.structs :as structs]
             [cljs.reader :as reader]))
-
-(defn clj->js
-  "Recursively transforms ClojureScript maps into Javascript objects,
-   other ClojureScript colls into JavaScript arrays, and ClojureScript
-   keywords into JavaScript strings."
-  [x]
-  (cond
-    (string? x) x
-    (keyword? x) (name x)
-    (map? x) (.-strobj (reduce (fn [m [k v]]
-               (assoc m (clj->js k) (clj->js v))) {} x))
-    (coll? x) (apply array (map clj->js x))
-    :else x))
 
 (defn success? [status]
   (some #{status} [200 201 202 204 205 206]))
