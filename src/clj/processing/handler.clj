@@ -1,7 +1,7 @@
 (ns processing.handler
   (:require [compojure.core :refer :all]            
             [noir.util.middleware :as middleware]
-            [processing.models.db :as db]
+            [processing.models.schema :as schema]
             [compojure.route :as route]
             [processing.routes.home :refer :all]
             [processing.routes.auth :refer :all]
@@ -18,7 +18,7 @@
    an app server such as Tomcat
    put any initialization code here"
   []  
-  (db/migrate)
+  (schema/migrate)
   (println "processing started successfully..."))
 
 (defn destroy
