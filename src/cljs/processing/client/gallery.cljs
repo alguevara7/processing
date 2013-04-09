@@ -12,7 +12,7 @@
 (defn append-template! [parent child]
   (append! parent (template/node child)))
 
-(defn sketch-canvas [id]
+(defn sketch-canvas [sketch-id]
   (template/node
     [:canvas 
      {:classes ["sketch"]
@@ -28,7 +28,7 @@
        [:i.icon-heart-empty {:id id}])
       likes]))
 
-(defn sketch [{:keys [id title description author likes liked-by-user remixed shared]} 
+(defn sketch [{:keys [sketch_id title description author likes liked-by-user remixed shared]} 
               canvas]
   [:div.row
    [:div.span12
@@ -37,7 +37,7 @@
      [:div {:classes ["sketch-author-bar" "text-info"]} (str "By " author)]
      [:div.sketch canvas]
      [:div.sketch-info-bar
-      (sketch-like id likes liked-by-user)
+      (sketch-like sketch_id likes liked-by-user)
       [:span {:classes ["sketch-info-bar-item" "text-info"]} [:i.icon-random] remixed]
       [:span {:classes ["sketch-info-bar-item" "text-info"]} [:i.icon-share] shared]]]]])
 
@@ -49,9 +49,9 @@
 
 (defn ui [new-sketches]
   (let [root (template/node [:div])]
-    (for [{:keys [id] :as s} new-sketches]
-     (let [canvas (sketch-canvas id)]
-       (load-sketch canvas [(str "/sketch/" id)])
+    (for [{:keys [sketch_id] :as s} new-sketches]
+     (let [canvas (sketch-canvas sketch_id)]
+       (load-sketch canvas [(str "/sketch/" sketch_id)])
        (append-template! root (sketch s canvas))
        (append-template! root (sepatator))))))
 
@@ -61,8 +61,8 @@
     (toggle-class! me "icon-heart-empty")))
 
 (defn register-event-handlers [new-sketches]
-  (doseq [{:keys [id] :as s} new-sketches]
-    (listen! (sel1 (str "#sketch-like-" id)) :click handle-like)))
+  (doseq [{:keys [sketch_id] :as s} new-sketches]
+    (listen! (sel1 (str "#sketch-like-" sketch_id)) :click handle-like)))
 
 (defn render [_ new-sketches]
   (replace-contents! gallery (ui new-sketches))

@@ -15,7 +15,7 @@
        vec))
 
 (defroutes fetch-routes  
-  (GET "/all-sketches" [] (response/edn (get-sketches)))
-  (GET "/sketch/:id" [id] (get-sketch (session/get :user-id) id)))
+  (GET "/all-sketches" [] (response/edn (db/get-sketches)))
+  (GET "/sketch/:id" [id] (db/get-sketch-source-code (Integer/parseInt id))))
 
 
