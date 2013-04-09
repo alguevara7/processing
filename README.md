@@ -17,7 +17,6 @@
   - Install Vagrant
   - clone this project git@github.com:alexguev/vagrant-postgresql.git
   - from within the folder you cloned the project into type:
-    - vagrant init
     - vagrant up 
   - install the PostgreSQL client in your host computer
   - connect to the PostgreSQL using: psql -h localhost -U postgres --password

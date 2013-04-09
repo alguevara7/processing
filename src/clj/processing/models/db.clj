@@ -10,15 +10,6 @@
   (table :sketch)
   (entity-fields :user_id))
 
-;(defn create-user [user]
-;  (insert users
-;          (values user)))
-
-;(defn get-user [id]
-;  (first (select users
-;                 (where {:id id})
-;                 (limit 1))))
-
 (defn get-sketches []
   (select sketches))
 
