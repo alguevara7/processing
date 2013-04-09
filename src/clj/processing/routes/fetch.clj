@@ -1,10 +1,15 @@
 (ns processing.routes.fetch  
   (:require [compojure.core :refer :all]
-            [processing.models.simulated :refer [get-sketch all-sketches]]
             [noir.session :as session]
-            [noir.response :as response]))
+            [noir.response :as response]
+            [processing.models.simulated :refer [get-sketch all-sketches]]
+            [processing.models.db :as db]))
 
 (defn get-sketches []
+  (let [sketches (db/get-sketches)]
+    (doseq [s sketches]
+      (println s)))
+  
   (->> (seq all-sketches)
        (map (fn [[k v]] (merge {:id k} v)))
        vec))
