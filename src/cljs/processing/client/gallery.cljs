@@ -73,7 +73,7 @@
     (render old new)))
 
 (defn init []
-  (ajax/GET "/all-sketches" (partial reset! sketches)))
+  (ajax/GET "/all-sketches" {:handler (partial reset! sketches)}))
 
 
   
