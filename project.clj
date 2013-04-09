@@ -10,7 +10,8 @@
    [com.taoensso/tower "1.2.0"]
    [markdown-clj "0.9.19"]
    [org.clojure/java.jdbc "0.2.3"]
-   [com.h2database/h2 "1.3.170"]
+   [ragtime "0.3.2"]
+   [postgresql/postgresql "9.1-901.jdbc4"]
    [korma "0.3.0-RC2"]
    [log4j "1.2.15" 
     :exclusions [javax.mail/mail 
@@ -25,6 +26,8 @@
   {:handler processing.handler/war-handler,
    :init processing.handler/init,
    :destroy processing.handler/destroy}
+  :ragtime {:migrations ragtime.sql.files/migrations
+            :database "jdbc:postgresql://localhost:5432/processing?user=postgres&password=password"}
   :profiles
   {:production
    {:ring
@@ -38,12 +41,12 @@
   "http://example.com/FIXME"
   :plugins
   [[lein-ring "0.8.3"]
-   [lein-cljsbuild "0.3.0"]]
+   [lein-cljsbuild "0.3.0"]
+   [ragtime/ragtime.lein "0.3.2"]]
   :description
   "FIXME: write description"
   :min-lein-version "2.0.0"
   :source-paths ["src/clj"]
-  :hooks [leiningen.cljsbuild]
   :cljsbuild {
     :builds [{:id "dev"
               :source-paths ["src/cljs"], 
