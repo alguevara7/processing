@@ -3,6 +3,20 @@
             [korma.db :refer [defdb]]
             [processing.models.schema :as schema]))
 
+
+(defn rename-key [k from to]
+  (-> k name (.replaceAll from to) keyword))
+
+(defn modify-keys [m from to]
+  (reduce (fn [m [k v]] (assoc m (rename-key k from to) v)) {} m))
+
+(defn keys-sql->clj [m]
+  (modify-keys m "_" "-"))
+
+(defn keys-clj->sql [m]
+  (modify-keys m "-" "_"))
+
+
 (defdb db schema/db-spec)
 
 (defentity sketches
@@ -10,14 +24,23 @@
   (table :sketch)
   (entity-fields :create_by))
 
-(defn get-sketch-source-code [sketch-id]
-  (when-let [sketch (first (select sketches 
-                           (where {:sketch_id sketch-id})))]
-    (:source_code sketch)))
+(defmacro defop [name params & body]
+  `(defn ~name ~params 
+     (let [result# ~@body]
+       (cond 
+         (map? result#)
+         (keys-sql->clj result#)
+         (coll? result#)
+         (map keys-sql->clj result#)
+         :else nil))))
 
-(defn get-sketches []
+(defn get-sketch-source-code [sketch-id]
+  (:source_code (first (select sketches (where {:sketch_id sketch-id})))))
+
+(defop get-sketches-by-user-id [user-id]
+  (select sketches
+      (where {:created_by user-id})))
+
+(defop get-sketches []
   (select sketches))
 
-(defn get-sketches-by-user-id [user-id]
-  (select sketches
-  (where {:created_by user-id})))
