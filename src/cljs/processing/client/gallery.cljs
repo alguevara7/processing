@@ -2,7 +2,8 @@
   (:require [dommy.core :refer [listen! replace-contents! append!]]
             [dommy.attrs :refer [toggle-class!]]
             [dommy.template :as template]
-            [ajax.core :as ajax])
+            [ajax.core :as ajax]
+            [processing.client.util :refer [load-sketch]])
   (:require-macros [dommy.macros :refer [sel1]]))
 
 (def sketches (atom []))
@@ -43,9 +44,6 @@
 
 (defn sepatator []
   [:hr])
-
-(defn load-sketch [canvas sources]    
-  (.loadSketchFromSources js/Processing canvas (clj->js sources)))
 
 (defn ui [new-sketches]
   (let [root (template/node [:div])]

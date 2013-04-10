@@ -11,3 +11,6 @@
 
 (defn remove-cookie [name]
   (.remove goog.net.cookies name))
+
+(defn load-sketch [canvas sources]    
+  (.loadSketchFromSources js/Processing canvas (clj->js sources)))

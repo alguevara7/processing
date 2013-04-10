@@ -49,7 +49,7 @@
   (let [response (dailycred/sign-in login pass)]
     (when (= (:worked response) true)
       (let [user-id (-> response :user :id)]
-        (session/put! :user user-id)
+        (session/put! :user-id user-id)
         user-id)))
   )
 

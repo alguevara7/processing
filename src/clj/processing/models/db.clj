@@ -44,3 +44,14 @@
 (defop get-sketches []
   (select sketches))
 
+(defop save-sketch [user-id sketch-id title source-code]
+  (if sketch-id
+    (update sketches
+      (set-fields {:source_code source-code
+                   :title title})
+      (where {:created_by user-id :sketch_id sketch-id}))
+    (insert sketches 
+      (values {:created_by user-id
+               :title title
+               :source_code source-code}))))
+

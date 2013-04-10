@@ -7,6 +7,7 @@
 </style>
 
 <div class="hero-unit">     	
+<input type="text" id="title" value={{title}}></input>
 <canvas id="sketch-canvas" 
 		width=200 
 		height=100 
@@ -15,10 +16,10 @@
 </div>
     	     	
  <textarea id="code" name="code">
- {{sketch}}
+ {{source-code}}
 </textarea>
  <br/>
-<button type="button">render</button>
+<button type="button" id="render">render</button>
   
 <h3>Editor Help</h3>  
 <dl>
