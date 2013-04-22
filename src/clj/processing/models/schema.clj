@@ -31,7 +31,5 @@
     {:title "El Circulo 3"
      :created_by "db0e21a8-4f80-44a3-bb54-31822637d6c9"
      :source_code processing.models.simulated/sketch}))
-(insert-data)
-
 
 
