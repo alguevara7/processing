@@ -3,21 +3,21 @@
             [domina.events :refer [listen!]]
             [dommy.template :as template]
             [ajax.core :as ajax]
-            [processing.client.util :refer [load-sketch]])
+            [processing.client.util :refer [load-sketch render-string]])
   (:require-macros [dommy.macros :refer [sel1]]))
+(def cde "
+void setup() {
+    size(200, 200);
+    background(100);
+    stroke(255);
+    ellipse(50, 50, 25, 25);
+    println(\"hello web!\");
+ }
+") 
 
 (defn reload-scene []
   (.log js/console (str "reloading " js/sketchId))
-  (let [code "void setup(){background(100); stroke(10); ellipse(50, 50, 25, 25);}\n"
-        init (js/eval (.-sourceCode (.compile js/Processing code)))
-        processing (new js/Processing (sel1 :#sketch-canvas))]
-    (init processing)
-    (.setup processing))
-  #_(if (not-empty js/sketchId)  
-    (load-sketch (sel1 :#sketch-canvas) [(str "/sketch/" js/sketchId)])))
-
-	   
-
+  (render-string (sel1 :#sketch-canvas) cde  #_(.getValue js/editor)))
 
 (defn save-sketch []
   (ajax/POST "/save-sketch" 
@@ -26,5 +26,8 @@
      :handler reload-scene}))
 
 (defn ^:export init []
-  (reload-scene) 
-  (listen! (dom/by-id "render") :click save-sketch))
+  (reload-scene)
+  (listen! (dom/by-id "render") :click reload-scene)
+  #_(listen! (dom/by-id "render") :click save-sketch))
+
+  

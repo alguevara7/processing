@@ -14,3 +14,9 @@
 
 (defn load-sketch [canvas sources]    
   (.loadSketchFromSources js/Processing canvas (clj->js sources)))
+
+(defn render-string [canvas code]
+  (let [init (js/eval (.-sourceCode (.compile js/Processing code)))
+        processing (new js/Processing canvas)]
+    (init processing)
+    (.setup processing)))
