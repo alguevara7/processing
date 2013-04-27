@@ -5,29 +5,23 @@
             [ajax.core :as ajax]
             [processing.client.util :refer [load-sketch render-string]])
   (:require-macros [dommy.macros :refer [sel1]]))
-(def cde "
-void setup() {
-    size(200, 200);
-    background(100);
-    stroke(255);
-    ellipse(50, 50, 25, 25);
-    println(\"hello web!\");
- }
-") 
+
 
 (defn reload-scene []
-  (.log js/console (str "reloading " js/sketchId))
-  (render-string (sel1 :#sketch-canvas) cde  #_(.getValue js/editor)))
+  (.log js/console (str "reloading " js/sketchId)) 
+  (let [code (.getValue js/editor)] 
+    (if-not (clojure.string/blank? code) 
+      (render-string (sel1 :#sketch-canvas) (.getValue js/editor)))))
 
 (defn save-sketch []
   (ajax/POST "/save-sketch" 
     {:params {:title (dom/value (sel1 :#title))
-              :source-code (dom/value (sel1 :#code))}
+              :source-code (.getValue js/editor)}
      :handler reload-scene}))
 
 (defn ^:export init []
   (reload-scene)
   (listen! (dom/by-id "render") :click reload-scene)
-  #_(listen! (dom/by-id "render") :click save-sketch))
+  (listen! (dom/by-id "save") :click save-sketch))
 
   
