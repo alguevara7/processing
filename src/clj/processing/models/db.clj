@@ -34,8 +34,14 @@
          (map keys-sql->clj result#)
          :else nil))))
 
+(defop get-sketch [sketch-id]
+  (first 
+    (select sketches 
+      (where {:sketch_id sketch-id})
+      (limit 1))))
+
 (defn get-sketch-source-code [sketch-id]
-  (:source_code (first (select sketches (where {:sketch_id sketch-id})))))
+  (:source-code (get-sketch sketch-id)))
 
 (defop get-sketches-by-user-id [user-id]
   (select sketches
@@ -54,4 +60,3 @@
       (values {:created_by user-id
                :title title
                :source_code source-code}))))
-
