@@ -15,8 +15,13 @@
 (defn load-sketch [canvas sources]    
   (.loadSketchFromSources js/Processing canvas (clj->js sources)))
 
+(def renderer (atom nil))
+
 (defn render-string [canvas code]
+  (.clearRect (.getContext canvas "2d") 0 0 (.-width canvas) (.-height canvas))
+  (if @renderer (.exit @renderer))
   (let [init (js/eval (.-sourceCode (.compile js/Processing code)))
         processing (new js/Processing canvas)]
     (init processing)
-    (.setup processing)))
+    (.setup processing)
+    (reset! renderer processing)))
